@@ -1,0 +1,45 @@
+{
+  "npmScope": "nxegghead",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "accessToken": "Y2Y4MTZhNGMtN2Y2Ni00ZGQzLWIwMDQtZjEwNDgxYzcyMjdjfHJlYWQtd3JpdGU="
+      }
+    }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "projects": {
+    "store": {
+      "tags": []
+    },
+    "store-e2e": {
+      "tags": [],
+      "implicitDependencies": ["store"]
+    },
+    "store-ui-shared": {
+      "tags": []
+    },
+    "store-util-formatters": {
+      "tags": []
+    }
+  }
+}
