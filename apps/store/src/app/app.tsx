@@ -5,6 +5,8 @@ import { Header } from '@nxegghead/store/ui-shared';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { formatRating } from '@nxegghead/store/util-formatters';
 
+import React, { useState, useEffect } from 'react';
+
 import {
   Card,
   CardActionArea,
@@ -12,47 +14,84 @@ import {
   CardMedia,
   Typography,
 } from '@material-ui/core';
+
+import { Route, useHistory } from 'react-router-dom';
+
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { StoreFeatureGameDetail } from '@nxegghead/store/feature-game-detail';
 export function App() {
+  const [state, setState] = useState<{
+    data: any[];
+    loadingState: 'success' | 'error' | 'loading';
+  }>({
+    data: [],
+    loadingState: 'success',
+  });
+  const history = useHistory();
+  useEffect(() => {
+    setState({
+      ...state,
+      loadingState: 'loading',
+    });
+    fetch('/api/games')
+      .then((x) => x.json())
+      .then((res) => {
+        setState({ ...state, data: res, loadingState: 'success' });
+      })
+      .catch((err) => {
+        setState({ ...state, loadingState: 'error' });
+      });
+  }, []);
   return (
     <>
       <Header />
       <div className="container">
         <div className="games-layout">
-          {getAllGames().map((x) => (
-            <Card key={x.id} className="game-card">
-              <CardActionArea>
-                <CardMedia
-                  className="game-card-media"
-                  image={x.image}
-                  title={x.name}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {x.name}
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    component="p"
-                    color="textSecondary"
-                  >
-                    {x.name}
-                  </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    component="p"
-                    color="textSecondary"
-                    className="game-rating"
-                  >
-                    <strong>Rating:</strong> {formatRating(x.rating)}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
+          {state.loadingState === 'loading'
+            ? 'loading...'
+            : state.loadingState === 'error'
+            ? '<div>Error retrieving data</div>'
+            : state.data.map((x) => (
+                <Card
+                  key={x.id}
+                  className="game-card"
+                  onClick={() => history.push(`/game/${x.id}`)}
+                >
+                  <CardActionArea>
+                    <CardMedia
+                      className="game-card-media"
+                      image={x.image}
+                      title={x.name}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {x.name}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body2"
+                        component="p"
+                        color="textSecondary"
+                      >
+                        {x.name}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="body2"
+                        component="p"
+                        color="textSecondary"
+                        className="game-rating"
+                      >
+                        <strong>Rating:</strong> {formatRating(x.rating)}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              ))}
         </div>
       </div>
+
+      <Route path="/game/:id" component={StoreFeatureGameDetail} />
     </>
   );
 }

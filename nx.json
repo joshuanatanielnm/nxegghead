@@ -28,12 +28,18 @@
     ]
   },
   "projects": {
+    "api": {
+      "tags": []
+    },
     "store": {
       "tags": []
     },
     "store-e2e": {
       "tags": [],
       "implicitDependencies": ["store"]
+    },
+    "store-feature-game-detail": {
+      "tags": []
     },
     "store-ui-shared": {
       "tags": []

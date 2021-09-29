@@ -23,14 +23,6 @@ const games = [
     rating: Math.random(),
     image: '/assets/img.jpg',
   },
-  {
-    id: 'fourth id',
-    name: 'fourth name',
-    description: 'fourth description',
-    price: 20,
-    rating: Math.random(),
-    image: '/assets/img.jpg',
-  },
 ];
 
 export const getAllGames = () => games;
