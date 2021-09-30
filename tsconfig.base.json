@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nxegghead/api/util-interface": ["libs/api/util-interface/src/index.ts"],
       "@nxegghead/store/feature-game-detail": [
         "libs/store/feature-game-detail/src/index.ts"
       ],

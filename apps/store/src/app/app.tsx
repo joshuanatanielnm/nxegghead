@@ -1,10 +1,9 @@
-import { getAllGames } from '../fake-api';
 import './app.scss';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { Header } from '@nxegghead/store/ui-shared';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { formatRating } from '@nxegghead/store/util-formatters';
-
+import { Game } from '@nxegghead/api/util-interface';
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -21,7 +20,7 @@ import { Route, useHistory } from 'react-router-dom';
 import { StoreFeatureGameDetail } from '@nxegghead/store/feature-game-detail';
 export function App() {
   const [state, setState] = useState<{
-    data: any[];
+    data: Game[];
     loadingState: 'success' | 'error' | 'loading';
   }>({
     data: [],
@@ -42,52 +41,55 @@ export function App() {
         setState({ ...state, loadingState: 'error' });
       });
   }, []);
+
   return (
     <>
       <Header />
       <div className="container">
         <div className="games-layout">
-          {state.loadingState === 'loading'
-            ? 'loading...'
-            : state.loadingState === 'error'
-            ? '<div>Error retrieving data</div>'
-            : state.data.map((x) => (
-                <Card
-                  key={x.id}
-                  className="game-card"
-                  onClick={() => history.push(`/game/${x.id}`)}
-                >
-                  <CardActionArea>
-                    <CardMedia
-                      className="game-card-media"
-                      image={x.image}
-                      title={x.name}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {x.name}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="p"
-                        color="textSecondary"
-                      >
-                        {x.name}
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="p"
-                        color="textSecondary"
-                        className="game-rating"
-                      >
-                        <strong>Rating:</strong> {formatRating(x.rating)}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              ))}
+          {state.loadingState === 'loading' ? (
+            'loading...'
+          ) : state.loadingState === 'error' ? (
+            <div>Error retrieving data</div>
+          ) : (
+            state.data.map((x) => (
+              <Card
+                key={x.id}
+                className="game-card"
+                onClick={() => history.push(`/game/${x.id}`)}
+              >
+                <CardActionArea>
+                  <CardMedia
+                    className="game-card-media"
+                    image={x.image}
+                    title={x.name}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {x.name}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="p"
+                      color="textSecondary"
+                    >
+                      {x.name}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="p"
+                      color="textSecondary"
+                      className="game-rating"
+                    >
+                      <strong>Rating:</strong> {formatRating(x.rating)}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))
+          )}
         </div>
       </div>
 

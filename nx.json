@@ -31,6 +31,9 @@
     "api": {
       "tags": []
     },
+    "api-util-interface": {
+      "tags": []
+    },
     "store": {
       "tags": []
     },
