@@ -40,7 +40,7 @@ export function App() {
       .catch((err) => {
         setState({ ...state, loadingState: 'error' });
       });
-  }, []);
+  }, [state]);
 
   return (
     <>
